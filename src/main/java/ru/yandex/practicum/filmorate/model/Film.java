@@ -1,12 +1,12 @@
 package ru.yandex.practicum.filmorate.model;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NonNull;
 import ru.yandex.practicum.filmorate.annotations.ReleaseDateAfter;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data

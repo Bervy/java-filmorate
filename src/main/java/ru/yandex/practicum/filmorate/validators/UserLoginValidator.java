@@ -1,10 +1,11 @@
 package ru.yandex.practicum.filmorate.validators;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
-import jakarta.validation.constraints.NotNull;
 import ru.yandex.practicum.filmorate.annotations.ContainsSpaces;
 import ru.yandex.practicum.filmorate.logger.UserLogger;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.constraints.NotNull;
 
 public class UserLoginValidator implements ConstraintValidator<ContainsSpaces, String> {
 

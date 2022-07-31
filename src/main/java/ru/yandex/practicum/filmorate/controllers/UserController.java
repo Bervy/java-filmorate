@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +8,7 @@ import ru.yandex.practicum.filmorate.logger.UserLogger;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validators.UserNameValidator;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

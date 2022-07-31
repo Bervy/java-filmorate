@@ -1,9 +1,9 @@
 package ru.yandex.practicum.filmorate.annotations;
 
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
 import ru.yandex.practicum.filmorate.validators.UserLoginValidator;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
