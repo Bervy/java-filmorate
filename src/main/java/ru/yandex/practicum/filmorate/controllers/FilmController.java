@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.film.FilmService;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -69,7 +69,8 @@ public class FilmController extends AbstractController<Film> {
     }
 
     @GetMapping("/popular")
-    public List<Film> getSortedFilmsByLikes(@RequestParam(value = "count", required = false) Long count) {
+    public List<Film> getSortedFilmsByLikes(@RequestParam(value = "count", required = false)
+                                            @Min(1) Long count) {
         log.info("Request received for get sorted films by likes");
         return filmService.getSortedFilmsByLikes(count);
     }
