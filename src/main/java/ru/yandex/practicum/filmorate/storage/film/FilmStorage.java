@@ -17,5 +17,5 @@ public interface FilmStorage {
 
     Map<Long, Film> getFilms();
 
-    Film getFilm(Long filmId);
+    Film getFilmById(Long filmId);
 }
