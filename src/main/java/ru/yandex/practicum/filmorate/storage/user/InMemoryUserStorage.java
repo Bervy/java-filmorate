@@ -23,7 +23,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getUser(Long userId) {
+    public User getUserById(Long userId) {
         if (userId == null) {
             throw new UserNotFoundException("Вы не ввели id пользователя");
         }
