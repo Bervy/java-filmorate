@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/users")
-public class UserController implements Сontroller<User> {
+public class UserController implements Controller<User> {
 
     private final UserService userService;
 

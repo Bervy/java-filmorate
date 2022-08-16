@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import java.util.List;
 
-public interface Сontroller<T> {
+public interface Controller<T> {
 
     List<T> findAll();
 
