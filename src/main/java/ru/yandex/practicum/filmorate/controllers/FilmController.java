@@ -69,7 +69,7 @@ public class FilmController extends AbstractController<Film> {
     }
 
     @GetMapping("/popular")
-    public List<Film> getSortedFilmsByLikes(@RequestParam(value = "count", required = false)
+    public List<Film> getSortedFilmsByLikes(@RequestParam(value = "count", required = false, defaultValue = "10")
                                             @Min(1) Long count) {
         log.info("Request received for get sorted films by likes");
         return filmService.getSortedFilmsByLikes(count);
