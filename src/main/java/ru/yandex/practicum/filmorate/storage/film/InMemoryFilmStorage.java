@@ -24,7 +24,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film getFilm(Long filmId) {
+    public Film getFilmById(Long filmId) {
         if (filmId == null) {
             throw new FilmNotFoundException("You didn't enter film id");
         }
