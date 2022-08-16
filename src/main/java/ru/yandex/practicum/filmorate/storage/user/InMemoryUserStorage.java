@@ -3,13 +3,15 @@ package ru.yandex.practicum.filmorate.storage.user;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
-import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
-import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.FilmorateNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validators.UserNameValidator;
 
 import javax.validation.Valid;
 import java.util.*;
+
+import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.EMPTY_USER_ID;
+import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.USER_NOT_FOUND;
 
 @Component
 @Slf4j
@@ -25,14 +27,14 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User getUserById(Long userId) {
         if (userId == null) {
-            throw new UserNotFoundException("Вы не ввели id пользователя");
+            throw new FilmorateNotFoundException(String.valueOf(EMPTY_USER_ID));
         }
         if (users.containsKey(userId)) {
             log.info("User with id {} was returned", userId);
             return users.get(userId);
         } else {
-            throw new FilmNotFoundException("Пользователь с id " + userId +
-                    " не найден");
+            throw new FilmorateNotFoundException(String.format(
+                    String.valueOf(USER_NOT_FOUND), userId));
         }
     }
 
@@ -56,7 +58,8 @@ public class InMemoryUserStorage implements UserStorage {
                     user.getEmail());
             return user;
         } else {
-            throw new UserNotFoundException("There wasn't user in list.");
+            throw new FilmorateNotFoundException(String.format(
+                    String.valueOf(USER_NOT_FOUND), user.getId()));
         }
     }
 
@@ -70,7 +73,8 @@ public class InMemoryUserStorage implements UserStorage {
                     user.getEmail());
             return user;
         } else {
-            throw new UserNotFoundException("There wasn't user in list.");
+            throw new FilmorateNotFoundException(String.format(
+                    String.valueOf(USER_NOT_FOUND), user.getId()));
         }
     }
 

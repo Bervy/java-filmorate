@@ -3,18 +3,20 @@ package ru.yandex.practicum.filmorate.storage.film;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
-import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.FilmorateNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
 import java.util.*;
+
+import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.EMPTY_FILM_ID;
+import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.FILM_NOT_FOUND;
 
 @Component
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
 
     private static final String FILM_WITH_ID = "Film with id {}";
-    private static final String FILM_NOT_FOUND = "Film with id %d not found";
     private final Map<Long, Film> films = new HashMap<>();
     private long id = 0;
 
@@ -26,13 +28,14 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film getFilmById(Long filmId) {
         if (filmId == null) {
-            throw new FilmNotFoundException("You didn't enter film id");
+            throw new FilmorateNotFoundException(String.valueOf(EMPTY_FILM_ID));
         }
         if (films.containsKey(filmId)) {
             log.info(FILM_WITH_ID + " was returned", filmId);
             return films.get(filmId);
         } else {
-            throw new FilmNotFoundException(String.format(FILM_NOT_FOUND, filmId));
+            throw new FilmorateNotFoundException(String.format(
+                    String.valueOf(FILM_NOT_FOUND), filmId));
         }
     }
 
@@ -55,7 +58,8 @@ public class InMemoryFilmStorage implements FilmStorage {
                     film.getReleaseDate());
             return film;
         } else {
-            throw new FilmNotFoundException(String.format(FILM_NOT_FOUND, film.getId()));
+            throw new FilmorateNotFoundException(String.format(
+                    String.valueOf(FILM_NOT_FOUND), film.getId()));
         }
     }
 
@@ -68,7 +72,8 @@ public class InMemoryFilmStorage implements FilmStorage {
                     film.getReleaseDate());
             return film;
         } else {
-            throw new FilmNotFoundException(String.format(FILM_NOT_FOUND, film.getId()));
+            throw new FilmorateNotFoundException(String.format(
+                    String.valueOf(FILM_NOT_FOUND), film.getId()));
         }
     }
 
