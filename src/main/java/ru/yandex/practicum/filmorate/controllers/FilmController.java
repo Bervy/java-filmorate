@@ -12,39 +12,43 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/films")
-public class FilmController {
+public class FilmController extends AbstractController<Film> {
 
-    FilmService filmService;
+    private final FilmService filmService;
 
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
 
     @GetMapping
+    @Override
     public List<Film> findAll() {
         log.info("Request received for all movies");
         return filmService.getFilmStorage().findAll();
     }
 
     @GetMapping("/{filmId}")
-    public Film getFilm(@PathVariable("filmId") Long filmId) {
+    public Film getFilmById(@PathVariable("filmId") Long filmId) {
         log.info("Request received for get film with id {}", filmId);
-        return filmService.getFilmStorage().getFilm(filmId);
+        return filmService.getFilmStorage().getFilmById(filmId);
     }
 
     @PostMapping
+    @Override
     public Film create(@RequestBody @Valid Film film) {
         log.info("Request received for create film {}", film.getName());
         return filmService.getFilmStorage().create(film);
     }
 
     @PutMapping
+    @Override
     public Film update(@RequestBody @Valid Film film) {
         log.info("Request received for update film {}", film.getName());
         return filmService.getFilmStorage().update(film);
     }
 
     @DeleteMapping
+    @Override
     public Film delete(@RequestBody @Valid Film film) {
         log.info("Request received for delete film {}", film.getName());
         return filmService.getFilmStorage().delete(film);
