@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/users")
-public class UserController extends AbstractController<User> {
+public class UserController implements AbstractController<User> {
 
     private final UserService userService;
 
@@ -24,34 +24,34 @@ public class UserController extends AbstractController<User> {
     @Override
     public List<User> findAll() {
         log.debug("Request received for all users");
-        return userService.getUserStorage().findAll();
+        return userService.findAll();
     }
 
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable("userId") long userId) {
         log.debug("Request received for get user with id {}", userId);
-        return userService.getUserStorage().getUserById(userId);
+        return userService.getUserById(userId);
     }
 
     @PostMapping
     @Override
     public User create(@RequestBody @Valid User user) {
         log.info("Request received for create user {}", user.getName());
-        return userService.getUserStorage().create(user);
+        return userService.create(user);
     }
 
     @PutMapping
     @Override
     public User update(@RequestBody @Valid User user) {
         log.info("Request received for update user {}", user.getName());
-        return userService.getUserStorage().update(user);
+        return userService.update(user);
     }
 
     @DeleteMapping
     @Override
     public User delete(@RequestBody @Valid User user) {
         log.info("Request received for delete user {}", user.getName());
-        return userService.getUserStorage().delete(user);
+        return userService.delete(user);
     }
 
 

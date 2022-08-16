@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import javax.validation.Valid;
 import java.util.*;
 
-import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.EMPTY_FILM_ID;
 import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.FILM_NOT_FOUND;
 
 @Component
@@ -27,9 +26,6 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film getFilmById(Long filmId) {
-        if (filmId == null) {
-            throw new FilmorateNotFoundException(String.valueOf(EMPTY_FILM_ID));
-        }
         if (films.containsKey(filmId)) {
             log.info(FILM_WITH_ID + " was returned", filmId);
             return films.get(filmId);

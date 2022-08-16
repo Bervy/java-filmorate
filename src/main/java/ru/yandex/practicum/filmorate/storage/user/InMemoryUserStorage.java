@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.validators.UserNameValidator;
 import javax.validation.Valid;
 import java.util.*;
 
-import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.EMPTY_USER_ID;
 import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.USER_NOT_FOUND;
 
 @Component
@@ -26,9 +25,6 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User getUserById(Long userId) {
-        if (userId == null) {
-            throw new FilmorateNotFoundException(String.valueOf(EMPTY_USER_ID));
-        }
         if (users.containsKey(userId)) {
             log.info("User with id {} was returned", userId);
             return users.get(userId);

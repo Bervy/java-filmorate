@@ -20,6 +20,29 @@ public class FilmService {
 
     private FilmStorage filmStorage;
 
+    public List<Film> findAll() {
+        return filmStorage.findAll();
+    }
+
+    public Film getFilmById(Long filmId) {
+        if (filmId == null) {
+            throw new FilmorateNotFoundException(String.valueOf(EMPTY_FILM_ID));
+        }
+        return filmStorage.getFilmById(filmId);
+    }
+
+    public Film create(Film film) {
+        return filmStorage.create(film);
+    }
+
+    public Film update(Film film) {
+        return filmStorage.update(film);
+    }
+
+    public Film delete(Film film) {
+        return filmStorage.delete(film);
+    }
+
     public void addLike(long filmId, long userId) {
         Set<Long> filmLikes = getValidLikesByFilmId(filmId);
         if (filmLikes.contains(userId)) {
@@ -59,10 +82,6 @@ public class FilmService {
         }
         throw new FilmorateNotFoundException(String.format(
                 String.valueOf(FILM_NOT_FOUND), filmId));
-    }
-
-    public FilmStorage getFilmStorage() {
-        return filmStorage;
     }
 
     @Autowired

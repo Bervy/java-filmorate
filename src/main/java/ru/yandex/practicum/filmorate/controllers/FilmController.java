@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/films")
-public class FilmController extends AbstractController<Film> {
+public class FilmController implements AbstractController<Film> {
 
     private final FilmService filmService;
 
@@ -24,34 +24,34 @@ public class FilmController extends AbstractController<Film> {
     @Override
     public List<Film> findAll() {
         log.info("Request received for all movies");
-        return filmService.getFilmStorage().findAll();
+        return filmService.findAll();
     }
 
     @GetMapping("/{filmId}")
     public Film getFilmById(@PathVariable("filmId") Long filmId) {
         log.info("Request received for get film with id {}", filmId);
-        return filmService.getFilmStorage().getFilmById(filmId);
+        return filmService.getFilmById(filmId);
     }
 
     @PostMapping
     @Override
     public Film create(@RequestBody @Valid Film film) {
         log.info("Request received for create film {}", film.getName());
-        return filmService.getFilmStorage().create(film);
+        return filmService.create(film);
     }
 
     @PutMapping
     @Override
     public Film update(@RequestBody @Valid Film film) {
         log.info("Request received for update film {}", film.getName());
-        return filmService.getFilmStorage().update(film);
+        return filmService.update(film);
     }
 
     @DeleteMapping
     @Override
     public Film delete(@RequestBody @Valid Film film) {
         log.info("Request received for delete film {}", film.getName());
-        return filmService.getFilmStorage().delete(film);
+        return filmService.delete(film);
     }
 
     @PutMapping("/{id}/like/{userId}")

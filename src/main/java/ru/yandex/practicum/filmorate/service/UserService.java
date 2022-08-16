@@ -21,6 +21,30 @@ public class UserService {
 
     private UserStorage userStorage;
 
+    public List<User> findAll() {
+        return userStorage.findAll();
+    }
+
+    public User getUserById(Long userId) {
+        if (userId == null) {
+            throw new FilmorateNotFoundException(String.valueOf(EMPTY_USER_ID));
+        }
+        return userStorage.getUserById(userId);
+    }
+
+    public User create(User user) {
+        return userStorage.create(user);
+    }
+
+    public User update(User user) {
+        return userStorage.update(user);
+    }
+
+    public User delete(User user) {
+        return userStorage.delete(user);
+    }
+
+
     public void addFriend(long userId, long friendId) {
         User user = getValidUser(userId);
         User friend = getValidUser(friendId);
@@ -91,11 +115,7 @@ public class UserService {
         return getValidUser(userId).getFriends();
     }
 
-    public UserStorage getUserStorage() {
-        return userStorage;
-    }
-
-    @Autowired()
+    @Autowired
     public void setUserStorage(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
