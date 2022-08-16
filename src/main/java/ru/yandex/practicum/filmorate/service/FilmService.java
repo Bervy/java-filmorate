@@ -8,12 +8,10 @@ import ru.yandex.practicum.filmorate.exceptions.FilmorateNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.lang.Math.min;
 import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.*;
 
 @Service
@@ -45,18 +43,10 @@ public class FilmService {
     }
 
     public List<Film> getSortedFilmsByLikes(Long count) {
-        List<Film> films = new ArrayList<>(filmStorage.findAll());
-        if (films.isEmpty()) {
-            return new ArrayList<>();
-        }
-        List<Film> sortedFilmsByLikes = films.stream()
+        return filmStorage.findAll().stream()
                 .sorted(((o1, o2) -> o2.getLikes().size() - o1.getLikes().size()))
+                .limit(count)
                 .collect(Collectors.toList());
-        if (count == null) {
-            return sortedFilmsByLikes.subList(0, min(sortedFilmsByLikes.size(), 10));
-        } else {
-            return sortedFilmsByLikes.subList(0, (int) min(sortedFilmsByLikes.size(), count));
-        }
     }
 
     private boolean isFilmIdExistsInFilms(long filmId) {
