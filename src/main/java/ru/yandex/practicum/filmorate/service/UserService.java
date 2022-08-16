@@ -1,10 +1,10 @@
-package ru.yandex.practicum.filmorate.service.user;
+package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exceptions.UserAlreadyExistsException;
-import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.FilmorateAlreadyExistsException;
+import ru.yandex.practicum.filmorate.exceptions.FilmorateNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
@@ -13,23 +13,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.*;
+
 @Service
 @Slf4j
 public class UserService {
 
-    private static final String USER_ALREADY_EXISTS = "User with id %d is already friends" +
-            "with user id %d";
-    private static final String USER_NOT_FOUND = "Wrong user id or friend id";
-    private static final String USER_DONT_EXISTS_ANOTHER_USER = "User with id %d dont have friend " +
-            "with id %d";
-
-    UserStorage userStorage;
+    private UserStorage userStorage;
 
     public void addFriend(long userId, long friendId) {
         User user = getValidUser(userId);
         User friend = getValidUser(friendId);
         if (isUserExistsAnotherUser(user, friendId)) {
-            throw new UserAlreadyExistsException(String.format(USER_ALREADY_EXISTS, friendId, userId));
+            throw new FilmorateAlreadyExistsException(String.format(
+                    String.valueOf(USER_ALREADY_EXISTS), friendId, userId));
         } else {
             user.getFriends().add(friendId);
             friend.getFriends().add(userId);
@@ -45,7 +42,8 @@ public class UserService {
             friend.getFriends().remove(userId);
             log.info("User with id {} deleted friend user with id {}", userId, friendId);
         } else {
-            throw new UserNotFoundException(String.format(USER_DONT_EXISTS_ANOTHER_USER, userId, friendId));
+            throw new FilmorateNotFoundException(String.format(
+                    String.valueOf(USER_DONT_EXISTS_ANOTHER_USER), userId, friendId));
         }
     }
 
@@ -86,7 +84,7 @@ public class UserService {
         if (isUserExists(userId)) {
             return userStorage.getUsers().get(userId);
         }
-        throw new UserNotFoundException(USER_NOT_FOUND);
+        throw new FilmorateNotFoundException(String.valueOf(USER_OR_FRIEND_NOT_FOUND));
     }
 
     private Set<Long> getValidUserIds(Long userId) {
