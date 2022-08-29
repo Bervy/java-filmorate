@@ -36,8 +36,11 @@ LIMIT 10;
 4) Get friends of user with id 3
 
 SELECT *
+
 FROM friendship
+
 WHERE user_id = 3 
+
 AND state_of_friendship = true
 
 5) Get all users
@@ -58,6 +61,7 @@ FROM films;
    FROM users AS u
 
    WHERE u.user_id IN (
+   
    (SELECT friend_id AS user_id FROM friendship WHERE user_id = 1 AND state_of_friendship IS TRUE)
 
    UNION
@@ -66,9 +70,11 @@ FROM films;
    )
 
    AND u.user_id IN (
+   
    (SELECT friend_id AS user_id FROM friendship WHERE user_id = 2 AND state_of_friendship IS TRUE)
 
    UNION
 
    (SELECT user_id AS user_id FROM friendship WHERE friend_id = 2 AND state_of_friendship IS TRUE)
+   
    );
