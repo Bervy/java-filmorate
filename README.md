@@ -56,6 +56,7 @@ SELECT *
 FROM films;
 
 7) Get common friends of two users
+
    SELECT *
 
    FROM users AS u
