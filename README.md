@@ -19,7 +19,7 @@
   ```` SQL
   SELECT f.name AS most_popular_film_names
   FROM film AS f
-  INNER JOIN film_likes AS fl ON fl.film_id=f.film_id
+  INNER JOIN film_like AS fl ON fl.film_id=f.film_id
   GROUP BY most_popular_film_names
   ORDER BY COUNT(fl.user_id) DESC
   LIMIT 10;
