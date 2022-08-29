@@ -1,5 +1,5 @@
 #### Database diagram
-![DB Diagram](/filmorate_diagram_Osipov.png)
+![DB Diagram](/filmorate_diagram_OsipovV.png)
 
 #### Basic request examples:
 
