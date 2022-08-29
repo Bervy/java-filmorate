@@ -1,9 +1,10 @@
-Database diagram
+#### Database diagram
 ![DB Diagram](/diagram/filmorate_diagram_Osipov.png)
 
-Basic request examples:
+#### Basic request examples:
 
 1) Get film with id 5
+```` SQL
 
 SELECT *
 
@@ -13,6 +14,8 @@ WHERE film_id = 5;
 
 2) Get user with id 2
 
+```` SQL
+
 SELECT *
 
 FROM users
@@ -20,6 +23,8 @@ FROM users
 WHERE user_id = 2;
 
 3) Get 10 most popular films
+
+```` SQL
 
 SELECT f.name AS most_popular_film_names
 
@@ -35,6 +40,8 @@ LIMIT 10;
 
 4) Get friends of user with id 3
 
+```` SQL
+
 SELECT *
 
 FROM friendship
@@ -45,17 +52,23 @@ AND state_of_friendship = true
 
 5) Get all users
 
+```` SQL
+
 SELECT *
 
 FROM users;
 
 6) Get all films
 
+```` SQL
+
 SELECT *
 
 FROM films;
 
 7) Get common friends of two users
+
+```` SQL
 
    SELECT *
 
