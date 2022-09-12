@@ -29,7 +29,7 @@ class UserControllerTest {
 
     @Test
     void shouldReturnStatusOkWhenCreateValidUser() throws Exception {
-        User newUser = new User(VALID_EMAIL, VALID_LOGIN, "Vladislav", VALID_DATE);
+        User newUser = new User(1L, "Vladislav", VALID_LOGIN, VALID_EMAIL, VALID_DATE);
         String body = mapper.writeValueAsString(newUser);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -37,7 +37,7 @@ class UserControllerTest {
 
     @Test
     void shouldReturnStatus4xxWhenCreateUserWithInvalidEmail() throws Exception {
-        User newUser = new User("ya.ru", VALID_LOGIN, "", VALID_DATE);
+        User newUser = new User(1L, "Vladislav", VALID_LOGIN, "asd", VALID_DATE);
         String body = mapper.writeValueAsString(newUser);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -45,7 +45,7 @@ class UserControllerTest {
 
     @Test
     void shouldReturnStatus4xxWhenCreateUserWithEmptyEmail() throws Exception {
-        User newUser = new User("", VALID_LOGIN, "", VALID_DATE);
+        User newUser = new User(1L, "Vladislav", VALID_LOGIN, " ", VALID_DATE);
         String body = mapper.writeValueAsString(newUser);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -53,7 +53,7 @@ class UserControllerTest {
 
     @Test
     void shouldReturnStatus4xxWhenCreateUserWithEmptyLogin() throws Exception {
-        User newUser = new User(VALID_EMAIL, "", "", VALID_DATE);
+        User newUser = new User(1L, "Vladislav", " ", VALID_EMAIL, VALID_DATE);
         String body = mapper.writeValueAsString(newUser);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -61,7 +61,7 @@ class UserControllerTest {
 
     @Test
     void shouldReturnStatus4xxWhenCreateUserWithSpaceInLogin() throws Exception {
-        User newUser = new User(VALID_EMAIL, "Vlad ", "", VALID_DATE);
+        User newUser = new User(1L, "Vladislav", "Vlad ", VALID_EMAIL, VALID_DATE);
         String body = mapper.writeValueAsString(newUser);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -69,7 +69,7 @@ class UserControllerTest {
 
     @Test
     void shouldReturnStatus4xxWhenCreateUserWithFutureBirthday() throws Exception {
-        User newUser = new User(VALID_EMAIL, VALID_LOGIN, "",
+        User newUser = new User(1L, "Vladislav", "Vlad ", VALID_EMAIL,
                 LocalDate.of(2100, 1, 29));
         String body = mapper.writeValueAsString(newUser);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON))
@@ -79,8 +79,7 @@ class UserControllerTest {
     @Test
     void shouldReturnStatusOkWhenUpdateValidUser() throws Exception {
         createUser();
-        User updatedUser = new User(VALID_EMAIL, VALID_LOGIN, "Vlad111", VALID_DATE);
-        updatedUser.setId(1);
+        User updatedUser = new User(1L, "Vladislav11", VALID_LOGIN, VALID_EMAIL, VALID_DATE);
         String body = mapper.writeValueAsString(updatedUser);
         this.mockMvc.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -89,8 +88,7 @@ class UserControllerTest {
     @Test
     void shouldReturnStatus4xxWhenUpdateUserWithInvalidEmail() throws Exception {
         createUser();
-        User updatedUser = new User("ya.ru", VALID_LOGIN, "", VALID_DATE);
-        updatedUser.setId(1);
+        User updatedUser = new User(1L, "Vladislav", VALID_LOGIN, "asd", VALID_DATE);
         String body = mapper.writeValueAsString(updatedUser);
         this.mockMvc.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -99,8 +97,7 @@ class UserControllerTest {
     @Test
     void shouldReturnStatus4xxWhenUpdateUserWithEmptyEmail() throws Exception {
         createUser();
-        User updatedUser = new User("", VALID_LOGIN, "", VALID_DATE);
-        updatedUser.setId(1);
+        User updatedUser = new User(1L, "Vladislav", VALID_LOGIN, " ", VALID_DATE);
         String body = mapper.writeValueAsString(updatedUser);
         this.mockMvc.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -109,8 +106,7 @@ class UserControllerTest {
     @Test
     void shouldReturnStatus4xxWhenUpdateUserWithEmptyLogin() throws Exception {
         createUser();
-        User updatedUser = new User(VALID_EMAIL, "", "", VALID_DATE);
-        updatedUser.setId(1);
+        User updatedUser = new User(1L, "Vladislav", " ", VALID_EMAIL, VALID_DATE);
         String body = mapper.writeValueAsString(updatedUser);
         this.mockMvc.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -119,8 +115,7 @@ class UserControllerTest {
     @Test
     void shouldReturnStatus4xxWhenUpdateUserWithSpaceInLogin() throws Exception {
         createUser();
-        User updatedUser = new User(VALID_EMAIL, "Vlad ", "", VALID_DATE);
-        updatedUser.setId(1);
+        User updatedUser = new User(1L, "Vladislav", "Vlad ", VALID_EMAIL, VALID_DATE);
         String body = mapper.writeValueAsString(updatedUser);
         this.mockMvc.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -129,16 +124,16 @@ class UserControllerTest {
     @Test
     void shouldReturnStatus4xxWhenUpdateUserWithFutureBirthday() throws Exception {
         createUser();
-        User updatedUser = new User(VALID_EMAIL, VALID_LOGIN, "",
+        User updatedUser = new User(1L, "Vladislav", "Vlad ", VALID_EMAIL,
                 LocalDate.of(2100, 1, 29));
-        updatedUser.setId(1);
         String body = mapper.writeValueAsString(updatedUser);
         this.mockMvc.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
 
     private void createUser() throws Exception {
-        String body = mapper.writeValueAsString(new User(VALID_EMAIL, VALID_LOGIN, "", VALID_DATE));
+        String body = mapper.writeValueAsString(new User(1L, "Vladislav11",
+                VALID_LOGIN, VALID_EMAIL, VALID_DATE));
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

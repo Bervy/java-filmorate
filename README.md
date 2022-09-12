@@ -1,5 +1,5 @@
 #### Database diagram
-![DB Diagram](/diagram/filmorate_diagram_Osipov.png)
+![DB Diagram](diagram/filmorate_diagram_Osipov.png)
 
 #### Basic request examples:
 
@@ -17,11 +17,12 @@
 
 - Get 10 most popular films
   ```` SQL
-  SELECT f.name AS most_popular_film_names
-  FROM film AS f
-  INNER JOIN film_likes AS fl ON fl.film_id=f.film_id
-  GROUP BY most_popular_film_names
-  ORDER BY COUNT(fl.user_id) DESC
+  SELECT f.film_id, f.film_name, f.description, f.release_date, f.duration,r.mpa_id, r.mpa_name
+  FROM films AS f
+  JOIN rating AS r ON f.mpa_id = r.mpa_id
+  LEFT JOIN FILM_LIKE AS l ON f.film_id = l.film_id
+  GROUP BY f.film_id
+  ORDER BY COUNT(l.user_id) DESC
   LIMIT 10;
 
 - Get friends of user with id 3
@@ -43,15 +44,7 @@
 
 - Get common friends of two users
   ```` SQL
-  SELECT *
-  FROM user AS u
-  WHERE u.user_id IN (
-  (SELECT friend_id AS user_id FROM friendship WHERE user_id = 1 AND state_of_friendship IS TRUE)
-  UNION
-  (SELECT user_id AS user_id FROM friendship WHERE friend_id = 1 AND state_of_friendship IS TRUE)
-  )
-  AND u.user_id IN (   
-  (SELECT friend_id AS user_id FROM friendship WHERE user_id = 2 AND state_of_friendship IS TRUE)
-  UNION
-  (SELECT user_id AS user_id FROM friendship WHERE friend_id = 2 AND state_of_friendship IS TRUE) 
-  );
+  SELECT * FROM users AS us
+  JOIN FRIENDSHIP AS fr1 ON us.user_id = fr1.friend_id
+  JOIN FRIENDSHIP AS fr2 ON us.user_id = fr2.friend_id
+  WHERE fr1.user_id = ? AND fr2.user_id = ?;
