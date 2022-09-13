@@ -20,7 +20,8 @@ public class User {
     private Long id;
     @NonNull
     private String name;
-    @NotBlank @ContainsSpaces
+    @NotBlank
+    @ContainsSpaces
     private final String login;
     @NotBlank
     @Email

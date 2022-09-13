@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.controllers.impl;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.controllers.AbstractController;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.impl.FilmService;
+import ru.yandex.practicum.filmorate.service.impl.FilmServiceImpl;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/films")
-public class FilmController implements AbstractController<Film> {
+public class FilmController extends AbstractController<Film> {
 
-    private final FilmService filmService;
+    private final FilmServiceImpl filmService;
 
-    public FilmController(FilmService filmService) {
+    public FilmController(FilmServiceImpl filmService) {
         this.filmService = filmService;
     }
 

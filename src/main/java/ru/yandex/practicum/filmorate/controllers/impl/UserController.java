@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.controllers.impl;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.controllers.AbstractController;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.impl.UserService;
+import ru.yandex.practicum.filmorate.service.impl.UserServiceImpl;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
-public class UserController implements AbstractController<User> {
+public class UserController extends AbstractController<User> {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 

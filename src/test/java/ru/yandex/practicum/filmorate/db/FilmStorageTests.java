@@ -23,7 +23,7 @@ class FilmStorageTests {
     private final FilmDao filmDao;
 
     @Autowired
-    public FilmStorageTests(@Qualifier("filmImpl") FilmDao filmDao) {
+    public FilmStorageTests(@Qualifier("filmRepositoryImpl") FilmDao filmDao) {
         this.filmDao = filmDao;
     }
 

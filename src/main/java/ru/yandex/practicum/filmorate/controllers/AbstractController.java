@@ -1,17 +1,12 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface AbstractController<T> {
+public abstract class AbstractController<T> implements FindAbstractController<T> {
 
-    List<T> findAll();
+    public abstract Optional<T> save(T t);
 
-    Optional<T> findById(Long id);
+    public abstract Optional<T> update(T t);
 
-    Optional<T> save(T t);
-
-    Optional<T> update(T t);
-
-    void delete(Long id);
+    public abstract void delete(Long id);
 }

@@ -16,13 +16,13 @@ import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.USE
 import static ru.yandex.practicum.filmorate.repository.sqloperations.UserSqlOperations.*;
 
 @Repository
-public class UserImpl implements UserDao {
+public class UserRepositoryImpl implements UserDao {
 
     private static final String USER_TABLE_NAME = "users";
     private static final String USER_TABLE_ID_COLUMN_NAME = "user_id";
     private final JdbcTemplate jdbcTemplate;
 
-    public UserImpl(JdbcTemplate jdbcTemplate) {
+    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -54,8 +54,8 @@ public class UserImpl implements UserDao {
             jdbcTemplate.update(DELETE_FILM_LIKE_BY_USER_ID.getTitle(), userId);
             jdbcTemplate.update(DELETE_FRIENDSHIP_BY_USER_ID.getTitle(), userId);
             jdbcTemplate.update(DELETE_USER.getTitle(), userId);
-        } catch (DataAccessException d) {
-            throw new FilmorateNotFoundException(USER_NOT_FOUND.getTitle());
+        } catch (DataAccessException e) {
+            throw new FilmorateNotFoundException(USER_NOT_FOUND.getTitle() + e.getMessage());
         }
     }
 
@@ -64,8 +64,8 @@ public class UserImpl implements UserDao {
         try {
             return Optional.ofNullable(jdbcTemplate.
                     queryForObject(GET_USER_BY_USER_ID.getTitle(), new UserMapper(), userId));
-        } catch (DataAccessException d) {
-            throw new FilmorateNotFoundException(USER_NOT_FOUND.getTitle());
+        } catch (DataAccessException e) {
+            throw new FilmorateNotFoundException(USER_NOT_FOUND.getTitle() + e.getMessage());
         }
     }
 

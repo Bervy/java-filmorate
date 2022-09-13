@@ -8,15 +8,16 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.repository.GenreDao;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ru.yandex.practicum.filmorate.repository.sqloperations.GenreSqlOperations.*;
 
 @Repository
-public class GenreImpl implements GenreDao {
+public class GenreRepositoryImpl implements GenreDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public GenreImpl(JdbcTemplate jdbcTemplate) {
+    public GenreRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -26,17 +27,18 @@ public class GenreImpl implements GenreDao {
     }
 
     @Override
-    public Genre getGenreById(long genreId) {
-        return jdbcTemplate.queryForObject(GET_GENRE_BY_GENRE_ID.getTitle(), new GenreMapper(), genreId);
+    public Optional<Genre> getGenreById(Long genreId) {
+        return Optional.ofNullable
+                (jdbcTemplate.queryForObject(GET_GENRE_BY_GENRE_ID.getTitle(), new GenreMapper(), genreId));
     }
 
     @Override
-    public List<Genre> getGenresByFilmId(long filmId) {
+    public List<Genre> getGenresByFilmId(Long filmId) {
         return jdbcTemplate.query(GET_GENRES_BY_FILM_ID.getTitle(), new GenreMapper(), filmId);
     }
 
     @Override
-    public List<Genre> getGenresIdByFilmId(long filmId) {
+    public List<Genre> getGenresIdByFilmId(Long filmId) {
         return jdbcTemplate.query(GET_GENRES_ID_BY_FILM_ID.getTitle(), new FilmGenreMapper(), filmId);
     }
 }

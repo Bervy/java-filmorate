@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.FilmorateNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.model.validators.UserNameValidator;
 import ru.yandex.practicum.filmorate.repository.FriendshipDao;
@@ -14,11 +15,11 @@ import ru.yandex.practicum.filmorate.service.AbstractService;
 import java.util.List;
 import java.util.Optional;
 
-import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.USER_NOT_FOUND;
+import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.*;
 
 @Service
 @Slf4j
-public class UserService implements AbstractService<User> {
+public class UserServiceImpl extends AbstractService<User> {
 
     private UserDao userDao;
     private FriendshipDao friendshipDao;
@@ -41,7 +42,7 @@ public class UserService implements AbstractService<User> {
 
     @Override
     public Optional<User> update(User user) {
-        userExistsValidation(user);
+        userValidation(user);
         return userDao.update(user);
     }
 
@@ -75,10 +76,13 @@ public class UserService implements AbstractService<User> {
     }
 
 
-    private void userExistsValidation(User user) {
+    private void userValidation(User user) {
         if (user.getId() < 0 || userDao.findById(user.getId()).isEmpty()) {
             throw new FilmorateNotFoundException(String.format(
                     USER_NOT_FOUND.getTitle(), user.getId()));
+        }
+        if (user.getBirthday() == null) {
+            throw new ValidationException(EMPTY_BIRTHDAY.getTitle());
         }
     }
 
@@ -90,13 +94,13 @@ public class UserService implements AbstractService<User> {
     }
 
     @Autowired
-    @Qualifier("userImpl")
+    @Qualifier("userRepositoryImpl")
     public void setUserDao(UserDao userStorage) {
         this.userDao = userStorage;
     }
 
     @Autowired
-    @Qualifier("friendshipImpl")
+    @Qualifier("friendshipRepositoryImpl")
     public void setFriendshipDao(FriendshipDao friendshipDao) {
         this.friendshipDao = friendshipDao;
     }

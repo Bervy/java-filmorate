@@ -5,15 +5,11 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Builder
 public
 class Rating {
     private final long id;
     private String name;
-
-    public Rating(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

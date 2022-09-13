@@ -1,7 +1,9 @@
 HELP.md
 target/
+db/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
+!**/src/main/**/db/
 !**/src/test/**/target/
 
 ### STS ###
@@ -15,6 +17,7 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
+*.db
 *.iws
 *.iml
 *.ipr
@@ -31,3 +34,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/db/

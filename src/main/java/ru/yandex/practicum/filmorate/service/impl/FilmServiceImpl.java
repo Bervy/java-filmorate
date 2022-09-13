@@ -22,7 +22,7 @@ import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.*;
 
 @Service
 @Slf4j
-public class FilmService implements AbstractService<Film> {
+public class FilmServiceImpl extends AbstractService<Film> {
 
     private FilmDao filmDao;
     private RatingDao ratingDao;
@@ -114,25 +114,25 @@ public class FilmService implements AbstractService<Film> {
         }
         try {
             ratingDao.getRatingById(film.getMpa().getId());
-        } catch (DataAccessException d) {
-            throw new FilmorateNotFoundException(RATING_NOT_FOUND.getTitle());
+        } catch (DataAccessException e) {
+            throw new FilmorateNotFoundException(RATING_NOT_FOUND.getTitle() + e.getMessage());
         }
     }
 
     @Autowired
-    @Qualifier("filmImpl")
+    @Qualifier("filmRepositoryImpl")
     public void setFilmDao(FilmDao filmDao) {
         this.filmDao = filmDao;
     }
 
     @Autowired
-    @Qualifier("ratingImpl")
+    @Qualifier("ratingRepositoryImpl")
     public void setRatingDao(RatingDao ratingDao) {
         this.ratingDao = ratingDao;
     }
 
     @Autowired
-    @Qualifier("userImpl")
+    @Qualifier("userRepositoryImpl")
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }

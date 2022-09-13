@@ -20,7 +20,7 @@ class UserStorageTests {
     private final UserDao userDao;
 
     @Autowired
-    public UserStorageTests(@Qualifier("userImpl") UserDao userDao) {
+    public UserStorageTests(@Qualifier("userRepositoryImpl") UserDao userDao) {
         this.userDao = userDao;
     }
 

@@ -13,11 +13,11 @@ import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.FRI
 import static ru.yandex.practicum.filmorate.repository.sqloperations.UserSqlOperations.*;
 
 @Repository
-public class FriendshipImpl implements FriendshipDao {
+public class FriendshipRepositoryImpl implements FriendshipDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public FriendshipImpl(JdbcTemplate jdbcTemplate) {
+    public FriendshipRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

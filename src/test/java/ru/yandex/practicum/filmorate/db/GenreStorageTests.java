@@ -8,6 +8,8 @@ import org.springframework.test.context.jdbc.Sql;
 import ru.yandex.practicum.filmorate.repository.GenreDao;
 import ru.yandex.practicum.filmorate.model.Genre;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -17,14 +19,14 @@ class GenreStorageTests {
     private final GenreDao genreDao;
 
     @Autowired
-    public GenreStorageTests(@Qualifier("genreImpl") GenreDao genreDao) {
+    public GenreStorageTests(@Qualifier("genreRepositoryImpl") GenreDao genreDao) {
         this.genreDao = genreDao;
     }
 
     @Test
     void shouldFindGenreById() {
-        Genre genre01 = genreDao.getGenreById(1L);
-        assertThat(genre01.getName()).isEqualTo("Комедия");
+        Optional<Genre> genre01 = genreDao.getGenreById(1L);
+        assertThat(genre01.get().getName()).isEqualTo("Комедия");
     }
 
     @Test

@@ -7,16 +7,17 @@ import ru.yandex.practicum.filmorate.model.Rating;
 import ru.yandex.practicum.filmorate.repository.RatingDao;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ru.yandex.practicum.filmorate.repository.sqloperations.RatingSqlOperations.GET_ALL_RATINGS;
 import static ru.yandex.practicum.filmorate.repository.sqloperations.RatingSqlOperations.GET_RATING_BY_RATING_ID;
 
 @Repository
-public class RatingImpl implements RatingDao {
+public class RatingRepositoryImpl implements RatingDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public RatingImpl(JdbcTemplate jdbcTemplate) {
+    public RatingRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -26,7 +27,8 @@ public class RatingImpl implements RatingDao {
     }
 
     @Override
-    public Rating getRatingById(long ratingId) {
-        return jdbcTemplate.queryForObject(GET_RATING_BY_RATING_ID.getTitle(), new RatingMapper(), ratingId);
+    public Optional<Rating> getRatingById(Long ratingId) {
+        return Optional.ofNullable
+                (jdbcTemplate.queryForObject(GET_RATING_BY_RATING_ID.getTitle(), new RatingMapper(), ratingId));
     }
 }

@@ -26,14 +26,14 @@ import static ru.yandex.practicum.filmorate.exceptions.ExceptionDescriptions.*;
 import static ru.yandex.practicum.filmorate.repository.sqloperations.FilmSqlOperations.*;
 
 @Repository
-public class FilmImpl implements FilmDao {
+public class FilmRepositoryImpl implements FilmDao {
     private static final String FILM_TABLE_NAME = "films";
     private static final String FILM_TABLE_ID_COLUMN_NAME = "film_id";
-    private static final String GENRE_QUALIFIER = "genreImpl";
+    private static final String GENRE_QUALIFIER = "genreRepositoryImpl";
     private final JdbcTemplate jdbcTemplate;
     private final GenreDao genreDao;
 
-    public FilmImpl(JdbcTemplate jdbcTemplate, @Qualifier(GENRE_QUALIFIER) GenreDao genreDao) {
+    public FilmRepositoryImpl(JdbcTemplate jdbcTemplate, @Qualifier(GENRE_QUALIFIER) GenreDao genreDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.genreDao = genreDao;
     }
@@ -67,8 +67,8 @@ public class FilmImpl implements FilmDao {
     public void delete(Long filmId) {
         try {
             jdbcTemplate.update(DELETE_FILM.getTitle(), filmId);
-        } catch (DataAccessException d) {
-            throw new FilmorateNotFoundException(GENRE_NOT_FOUND.getTitle());
+        } catch (DataAccessException e) {
+            throw new FilmorateNotFoundException(GENRE_NOT_FOUND.getTitle() + e.getMessage());
         }
     }
 
@@ -109,8 +109,8 @@ public class FilmImpl implements FilmDao {
         try {
             return Optional.ofNullable(jdbcTemplate.
                     queryForObject(GET_FILM_BY_FILM_ID.getTitle(), new FilmMapper(), filmId));
-        } catch (DataAccessException d) {
-            throw new FilmorateNotFoundException(FILM_NOT_FOUND.getTitle());
+        } catch (DataAccessException e) {
+            throw new FilmorateNotFoundException(FILM_NOT_FOUND.getTitle() + e.getMessage());
         }
     }
 
@@ -119,8 +119,7 @@ public class FilmImpl implements FilmDao {
     }
 
     private void filmInsertAndSetId(Film film) {
-        SimpleJdbcInsert simpleJdbcInsert = getFilmSimpleJdbcInsert();
-        long filmId = simpleJdbcInsert.executeAndReturnKey(film.toMap()).longValue();
+        long filmId = getFilmSimpleJdbcInsert().executeAndReturnKey(film.toMap()).longValue();
         film.setId(filmId);
     }
 
@@ -142,21 +141,21 @@ public class FilmImpl implements FilmDao {
         try {
             List<Genre> genresFromDbByFilm = genreDao.getGenresIdByFilmId(film.getId());
             if (!film.getGenres().isEmpty()) {
-                List<Genre> genresFromFrontEnd = new ArrayList<>(film.getGenres());
+                List<Genre> genresFromUI = new ArrayList<>(film.getGenres());
                 if (genresFromDbByFilm.isEmpty()) {
-                    updateFilmGenres(genresFromFrontEnd, film);
+                    updateFilmGenres(genresFromUI, film);
                 } else {
-                    List<Genre> matchedGenres = getGenresMatch(genresFromFrontEnd, genresFromDbByFilm);
-                    genresFromFrontEnd.removeAll(matchedGenres);
+                    List<Genre> matchedGenres = getGenresMatch(genresFromUI, genresFromDbByFilm);
+                    genresFromUI.removeAll(matchedGenres);
                     genresFromDbByFilm.removeAll(matchedGenres);
                     deleteFilmGenresFromDb(genresFromDbByFilm);
-                    updateFilmGenres(genresFromFrontEnd, film);
+                    updateFilmGenres(genresFromUI, film);
                 }
             } else {
                 deleteFilmGenresFromDb(genresFromDbByFilm);
             }
-        } catch (DataAccessException d) {
-            throw new FilmorateNotFoundException(GENRE_NOT_FOUND.getTitle());
+        } catch (DataAccessException e) {
+            throw new FilmorateNotFoundException(GENRE_NOT_FOUND.getTitle() + e.getMessage());
         }
     }
 

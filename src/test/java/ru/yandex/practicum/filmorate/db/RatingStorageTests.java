@@ -16,13 +16,13 @@ class RatingStorageTests {
     private final RatingDao ratingDao;
 
     @Autowired
-    public RatingStorageTests(@Qualifier("ratingImpl") RatingDao ratingDao) {
+    public RatingStorageTests(@Qualifier("ratingRepositoryImpl") RatingDao ratingDao) {
         this.ratingDao = ratingDao;
     }
 
     @Test
     void shouldFindMpaById() {
-        String mpa01Name = ratingDao.getRatingById(1L).getName();
+        String mpa01Name = ratingDao.getRatingById(1L).get().getName();
         assertThat(mpa01Name).isEqualTo("G");
     }
 

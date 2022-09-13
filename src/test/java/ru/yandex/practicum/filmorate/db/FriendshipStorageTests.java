@@ -19,7 +19,7 @@ class FriendshipStorageTests {
     private final FriendshipDao friendshipDao;
 
     @Autowired
-    public FriendshipStorageTests(@Qualifier("friendshipImpl") FriendshipDao friendshipDao) {
+    public FriendshipStorageTests(@Qualifier("friendshipRepositoryImpl") FriendshipDao friendshipDao) {
         this.friendshipDao = friendshipDao;
     }
 
