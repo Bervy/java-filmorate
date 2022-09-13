@@ -8,8 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Rating;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -39,7 +41,8 @@ class FilmControllerTest {
 
     @Test
     void shouldReturnStatusOkWhenCreateValidFilm() throws Exception {
-        Film newFilm = new Film(VALID_NAME, VALID_DESCRIPTION, VALID_DURATION, VALID_DATE);
+        Film newFilm = new Film(1L, VALID_NAME, VALID_DESCRIPTION, VALID_DURATION, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(newFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk());
@@ -47,7 +50,8 @@ class FilmControllerTest {
 
     @Test
     void shouldReturnStatusOkWhenCreateValidFilmWithDescriptionSize200() throws Exception {
-        Film newFilm = new Film(VALID_NAME, VALID_DESCRIPTION_SIZE_200, VALID_DURATION, VALID_DATE);
+        Film newFilm = new Film(1L, VALID_NAME, VALID_DESCRIPTION_SIZE_200, VALID_DURATION, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(newFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk());
@@ -55,7 +59,8 @@ class FilmControllerTest {
 
     @Test
     void shouldReturnStatus4xxWhenCreateValidFilmWithDescriptionSize201() throws Exception {
-        Film newFilm = new Film(VALID_NAME, INVALID_DESCRIPTION_SIZE_201, VALID_DURATION, VALID_DATE);
+        Film newFilm = new Film(1L, VALID_NAME, INVALID_DESCRIPTION_SIZE_201, VALID_DURATION, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(newFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is4xxClientError());
@@ -63,7 +68,8 @@ class FilmControllerTest {
 
     @Test
     void shouldReturnStatus4xxWhenCreateFilmWithEmptyName() throws Exception {
-        Film newFilm = new Film(" ", VALID_DESCRIPTION, VALID_DURATION, VALID_DATE);
+        Film newFilm = new Film(1L, " ", VALID_DESCRIPTION, VALID_DURATION, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(newFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is4xxClientError());
@@ -71,7 +77,8 @@ class FilmControllerTest {
 
     @Test
     void shouldReturnStatus4xxWhenCreateFilmWithNegativeDuration() throws Exception {
-        Film newFilm = new Film(VALID_NAME, VALID_DESCRIPTION, -162L, VALID_DATE);
+        Film newFilm = new Film(1L, VALID_NAME, VALID_DESCRIPTION, -162L, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(newFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is4xxClientError());
@@ -79,8 +86,9 @@ class FilmControllerTest {
 
     @Test
     void shouldReturnStatusOkWhenCreateFilmWithValidReleaseDate() throws Exception {
-        Film newFilm = new Film(VALID_NAME, VALID_DESCRIPTION, VALID_DURATION,
-                LocalDate.of(1895, 12, 28));
+        Film newFilm = new Film(1L, VALID_NAME, VALID_DESCRIPTION, VALID_DURATION,
+                LocalDate.of(1895, 12, 28),
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(newFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk());
@@ -88,7 +96,8 @@ class FilmControllerTest {
 
     @Test
     void shouldReturnStatus4xxWhenCreateFilmWithInvalidReleaseDate() throws Exception {
-        Film newFilm = new Film(VALID_NAME, VALID_DESCRIPTION, VALID_DURATION, INVALID_DATE);
+        Film newFilm = new Film(1L, VALID_NAME, VALID_DESCRIPTION, VALID_DURATION, INVALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(newFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is4xxClientError());
@@ -97,8 +106,8 @@ class FilmControllerTest {
     @Test
     void shouldReturnStatusOkWhenUpdateValidFilm() throws Exception {
         createFilm();
-        Film updatedFilm = new Film(VALID_NAME, "Island", VALID_DURATION, VALID_DATE);
-        updatedFilm.setId(1);
+        Film updatedFilm = new Film(1L, VALID_NAME, "Island", VALID_DURATION, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String updatedBody = mapper.writeValueAsString(updatedFilm);
         this.mockMvc.perform(put(URL).content(updatedBody).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk());
@@ -107,8 +116,8 @@ class FilmControllerTest {
     @Test
     void shouldReturnStatusOkWhenUpdateValidFilmWithDescriptionSize200() throws Exception {
         createFilm();
-        Film updatedFilm = new Film(VALID_NAME, VALID_DESCRIPTION_SIZE_200, VALID_DURATION, VALID_DATE);
-        updatedFilm.setId(1);
+        Film updatedFilm = new Film(1L, VALID_NAME, VALID_DESCRIPTION_SIZE_200, VALID_DURATION, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(updatedFilm);
         this.mockMvc.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk());
@@ -117,8 +126,8 @@ class FilmControllerTest {
     @Test
     void shouldReturnStatus4xxWhenUpdateValidFilmWithDescriptionSize201() throws Exception {
         createFilm();
-        Film updatedFilm = new Film(VALID_NAME, INVALID_DESCRIPTION_SIZE_201, VALID_DURATION, VALID_DATE);
-        updatedFilm.setId(1);
+        Film updatedFilm = new Film(1L, VALID_NAME, INVALID_DESCRIPTION_SIZE_201, VALID_DURATION, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(updatedFilm);
         this.mockMvc.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is4xxClientError());
@@ -127,9 +136,9 @@ class FilmControllerTest {
     @Test
     void shouldReturnStatus4xxWhenUpdateFilmWithEmptyName() throws Exception {
         createFilm();
-        Film updatedFilm = new Film(" ", VALID_DESCRIPTION, VALID_DURATION, VALID_DATE);
+        Film updatedFilm = new Film(1L, " ", "Island", VALID_DURATION, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(updatedFilm);
-        updatedFilm.setId(1);
         this.mockMvc.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is4xxClientError());
     }
@@ -137,8 +146,8 @@ class FilmControllerTest {
     @Test
     void shouldReturnStatus4xxWhenUpdateFilmWithNegativeDuration() throws Exception {
         createFilm();
-        Film updatedFilm = new Film(VALID_NAME, VALID_DESCRIPTION, -162L, VALID_DATE);
-        updatedFilm.setId(1);
+        Film updatedFilm = new Film(1L, VALID_NAME, "Island", -162L, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(updatedFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is4xxClientError());
@@ -147,9 +156,9 @@ class FilmControllerTest {
     @Test
     void shouldReturnStatusOkWhenUpdateFilmWithValidReleaseDate() throws Exception {
         createFilm();
-        Film updatedFilm = new Film(VALID_NAME, VALID_DESCRIPTION, VALID_DURATION,
-                LocalDate.of(1895, 12, 28));
-        updatedFilm.setId(1);
+        Film updatedFilm = new Film(1L, VALID_NAME, "Island", VALID_DURATION,
+                LocalDate.of(1895, 12, 28),
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(updatedFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk());
@@ -158,15 +167,16 @@ class FilmControllerTest {
     @Test
     void shouldReturnStatus4xxWhenUpdateFilmWithInvalidReleaseDate() throws Exception {
         createFilm();
-        Film updatedFilm = new Film(VALID_NAME, VALID_DESCRIPTION, VALID_DURATION, INVALID_DATE);
-        updatedFilm.setId(1);
+        Film updatedFilm = new Film(1L, VALID_NAME, "Island", VALID_DURATION, INVALID_DATE,
+                new Rating(1, "123"), new ArrayList<>());
         String body = mapper.writeValueAsString(updatedFilm);
         this.mockMvc.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is4xxClientError());
     }
 
     private void createFilm() throws Exception {
-        String newBody = mapper.writeValueAsString(new Film(VALID_NAME, VALID_DESCRIPTION, VALID_DURATION, VALID_DATE));
+        String newBody = mapper.writeValueAsString(new Film(1L, VALID_NAME, VALID_DESCRIPTION, VALID_DURATION, VALID_DATE,
+                new Rating(1, "123"), new ArrayList<>()));
         this.mockMvc.perform(post(URL).content(newBody).contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk());
     }

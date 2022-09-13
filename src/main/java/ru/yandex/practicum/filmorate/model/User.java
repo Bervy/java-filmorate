@@ -1,27 +1,41 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Data;
-import lombok.NonNull;
-import ru.yandex.practicum.filmorate.annotations.ContainsSpaces;
+import lombok.*;
+import ru.yandex.practicum.filmorate.model.annotations.ContainsSpaces;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
-@Data
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode(of = "id")
 public class User {
-    private long id = 0L;
-    private Set<Long> friends = new HashSet<>();
+    private Long id;
+    @NonNull
+    private String name;
+    @NotBlank
+    @ContainsSpaces
+    private final String login;
     @NotBlank
     @Email
     private final String email;
-    @NotBlank @ContainsSpaces
-    private final String login;
-    @NonNull
-    private String name;
     @Past
     private final LocalDate birthday;
+    private final Map<Long, Boolean> friends = new HashMap<>();
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> values = new HashMap<>();
+        values.put("user_name", name);
+        values.put("login", login);
+        values.put("email", email);
+        values.put("birthday", birthday);
+        return values;
+    }
 }
